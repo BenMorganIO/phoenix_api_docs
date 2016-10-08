@@ -1,5 +1,7 @@
 defmodule PhoenixApiDocs.Generator do
 
+  import Phoenix.Naming, only: [humanize: 1, resource_name: 2]
+
   def run do
     test_conns = PhoenixApiDocs.ConnLogger.conns
     app_module = Mix.Project.get.application |> Keyword.get(:mod) |> elem(0)
@@ -100,11 +102,10 @@ defmodule PhoenixApiDocs.Generator do
   defp set_default_group(%{group: group} = route_docs, route) when is_nil(group) do
     group =
       route.plug
-      |> Phoenix.Naming.resource_name("Controller")
-      |> Phoenix.Naming.humanize
+      |> resource_name("Controller")
+      |> humanize
 
-    route_docs
-    |> Map.put(:group, group)
+    Map.put(route_docs, :group, group)
   end
 
   defp set_default_group(route_docs, _), do: route_docs
