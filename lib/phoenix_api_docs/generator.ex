@@ -98,7 +98,10 @@ defmodule PhoenixApiDocs.Generator do
   end
 
   defp set_default_group(%{group: group} = route_docs, route) when is_nil(group) do
-    group = route.plug |> Phoenix.Naming.resource_name("Controller") |> Phoenix.Naming.humanize
+    group =
+      route.plug
+      |> Phoenix.Naming.resource_name("Controller")
+      |> Phoenix.Naming.humanize
 
     route_docs
     |> Map.put(:group, group)
