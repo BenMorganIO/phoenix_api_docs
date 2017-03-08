@@ -16,11 +16,11 @@ defmodule PhoenixApiDocs.Mixfile do
   #
   # Type `mix help compile.app` for more information
   def application do
-    [registered: [PhoenixApiDocs.ConnLogger],
+    [
+      registered: [PhoenixApiDocs.ConnLogger],
       mod: {PhoenixApiDocs, []},
-      env: [
-        docs_path: "docs"
-      ]]
+      env: [docs_path: "docs"]
+    ]
   end
 
   # Should work with all versions
