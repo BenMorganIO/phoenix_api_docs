@@ -66,10 +66,8 @@ defmodule PhoenixApiDocs.Generator do
 
   defp find_route(routes, path) do
     routes
-    |> Enum.sort_by(fn(route) -> -byte_size(route.path) end)
-    |> Enum.find(fn(route) ->
-      route_match?(route.path, path)
-    end)
+    |> Enum.sort_by(&(-byte_size(&1.path)))
+    |> Enum.find(&(route_match?(&1.path, path)))
   end
 
   defp route_match?(route, path) do
