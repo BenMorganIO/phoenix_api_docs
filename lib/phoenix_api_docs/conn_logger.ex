@@ -10,19 +10,11 @@ defmodule PhoenixApiDocs.ConnLogger do
     conn
   end
 
-  def conns do
-    GenServer.call(__MODULE__, :conns)
-  end
+  def conns, do: GenServer.call(__MODULE__, :conns)
 
-  def init([]) do
-    {:ok, []}
-  end
+  def init([]), do: {:ok, []}
 
-  def handle_cast({:save, conn}, conns) do
-    {:noreply, conns ++ [conn]}
-  end
+  def handle_cast({:save, conn}, conns), do: {:noreply, conns ++ [conn]}
 
-  def handle_call(:conns, _from, conns) do
-    {:reply, conns, conns}
-  end
+  def handle_call(:conns, _from, conns), do: {:reply, conns, conns}
 end
