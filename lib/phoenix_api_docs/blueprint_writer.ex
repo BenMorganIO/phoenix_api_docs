@@ -15,9 +15,7 @@ defmodule PhoenixApiDocs.BlueprintWriter do
     |> Enum.group_by(&(&1.group))
     |> Enum.to_list()
     |> Enum.reduce(documentation_header, fn({group_name, group_routes}, docs) ->
-      docs
-      <>
-      """
+      docs <> """
       # Group #{group_name}
 
       #{process_routes(group_name, group_routes)}
@@ -41,14 +39,10 @@ defmodule PhoenixApiDocs.BlueprintWriter do
   defp process_routes(group, routes) do
     Enum.reduce routes, "", fn(route, docs) ->
       docs
-      <>
-      process_header(group, route)
-      <>
-      process_note(route)
-      <>
-      process_parameters(route)
-      <>
-      process_requests(route)
+      <> process_header(group, route)
+      <> process_note(route)
+      <> process_parameters(route)
+      <> process_requests(route)
     end
   end
 
@@ -103,10 +97,11 @@ defmodule PhoenixApiDocs.BlueprintWriter do
   end
 
   defp process_parameters(_), do: ""
-
   defp process_requests(%{requests: requests}) when is_list(requests) do
     Enum.reduce requests, "", fn(request, docs) ->
-      docs <> request_body(request) <> response_body(request)
+      docs
+      <> request_body(request)
+      <> response_body(request)
     end
   end
 
