@@ -94,12 +94,30 @@ defmodule PhoenixApiDocs.Generator do
   end
 
   defp set_default_group(%{group: group} = route_docs, route) when is_nil(group) do
-    group = route.plug
-      |> Phoenix.Naming.resource_name("Controller")
-      |> Phoenix.Naming.humanize()
-
+    group = controller_name(route.plug)
     Map.put(route_docs, :group, group)
   end
 
   defp set_default_group(route_docs, _), do: route_docs
+
+  defp controller_name(alias) do
+    alias
+    |> to_string()
+    |> Module.split()
+    |> List.last()
+    |> unsuffix("Controller")
+    |> Macro.underscore()
+    |> String.replace("_", " ")
+    |> String.capitalize()
+  end
+
+  defp unsuffix(value, suffix) do
+    string = to_string(value)
+    suffix_size = byte_size(suffix)
+    prefix_size = byte_size(string) - suffix_size
+    case string do
+      <<prefix::binary-size(prefix_size), ^suffix::binary>> -> prefix
+      _ -> string
+    end
+  end
 end
