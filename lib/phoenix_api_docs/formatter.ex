@@ -23,5 +23,4 @@ defmodule PhoenixApiDocs.Formatter do
 
     PhoenixApiDocs.BlueprintWriter.run(api_docs, path)
   end
-
 end

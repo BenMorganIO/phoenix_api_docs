@@ -19,5 +19,4 @@ defmodule PhoenixApiDocs do
     end
     :ok
   end
-
 end

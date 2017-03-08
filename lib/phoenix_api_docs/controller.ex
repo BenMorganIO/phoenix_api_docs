@@ -1,5 +1,4 @@
 defmodule PhoenixApiDocs.Controller do
-
   defmacro __using__(_) do
     quote do
       import PhoenixApiDocs.Controller, only: [api: 3]
@@ -69,5 +68,4 @@ defmodule PhoenixApiDocs.Controller do
         atom_or_string
     end
   end
-
 end

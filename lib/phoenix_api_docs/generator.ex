@@ -1,5 +1,4 @@
 defmodule PhoenixApiDocs.Generator do
-
   def run do
     test_conns = PhoenixApiDocs.ConnLogger.conns
     app_module = Mix.Project.get.application |> Keyword.get(:mod) |> elem(0)
@@ -105,5 +104,4 @@ defmodule PhoenixApiDocs.Generator do
   end
 
   defp set_default_group(route_docs, _), do: route_docs
-
 end
