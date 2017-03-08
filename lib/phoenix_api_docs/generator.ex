@@ -14,10 +14,8 @@ defmodule PhoenixApiDocs.Generator do
 
   defp api_docs_info do
     case function_exported?(Mix.Project.get, :api_docs_info, 0) do
-      true ->
-        Mix.Project.get.api_docs_info
-      false ->
-        []
+      true -> Mix.Project.get.api_docs_info
+      false -> []
     end
   end
 
@@ -28,10 +26,8 @@ defmodule PhoenixApiDocs.Generator do
     |> Enum.filter(fn(route) -> Enum.member?(route.pipe_through, :api) end)
     |> Enum.reduce([], fn(route, routes_docs) ->
       case process_route(route, requests_list) do
-        {:ok, route_doc} ->
-          routes_docs ++ [route_doc]
-        _ ->
-          routes_docs
+        {:ok, route_doc} -> routes_docs ++ [route_doc]
+        _ -> routes_docs
       end
     end)
   end
@@ -39,10 +35,8 @@ defmodule PhoenixApiDocs.Generator do
   defp requests(routes, test_conns) do
     Enum.reduce test_conns, [], fn(conn, list) ->
       case find_route(routes, conn.request_path) do
-        nil ->
-          list
-        route ->
-          list ++ [request_map(route, conn)]
+        nil -> list
+        route -> list ++ [request_map(route, conn)]
       end
     end
   end
@@ -87,10 +81,8 @@ defmodule PhoenixApiDocs.Generator do
 
       {:ok, route_docs}
     rescue
-      UndefinedFunctionError ->
-        :error
-      FunctionClauseError ->
-        :error
+      UndefinedFunctionError -> :error
+      FunctionClauseError -> :error
     end
   end
 
