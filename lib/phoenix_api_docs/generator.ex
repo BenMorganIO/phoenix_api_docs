@@ -53,8 +53,7 @@ defmodule PhoenixApiDocs.Generator do
     if conn.body_params == %{} do
       request
     else
-      request
-      |> Map.put(:body, Poison.encode!(conn.body_params))
+      Map.put(request, :body, Poison.encode!(conn.body_params))
     end
   end
 
@@ -65,17 +64,25 @@ defmodule PhoenixApiDocs.Generator do
   end
 
   defp route_match?(route, path) do
-    route_regex = Regex.replace(~r/(:[^\/]+)/, route, "([^/]+)") |> Regex.compile!
-    Regex.match?(route_regex, path)
+    ~r/(:[^\/]+)/
+    |> Regex.replace(route, "([^/]+)")
+    |> Regex.compile!()
+    |> Regex.match?(path)
   end
 
   defp process_route(route, requests) do
     controller = Module.concat([:Elixir | Module.split(route.plug)])
-    method = route.verb |> Atom.to_string |> String.upcase
-    route_requests = Enum.filter(requests, fn(request) -> request.method == method and request.path == route.path end)
+    method = route.verb
+      |> Atom.to_string
+      |> String.upcase
+
+    route_requests = Enum.filter requests, fn(request) ->
+      request.method == method and request.path == route.path
+    end
+
     try do
-      route_docs =
-        apply(controller, :api_doc, [method, route.path])
+      route_docs = controller
+        |> apply(:api_doc, [method, route.path])
         |> set_default_group(route)
         |> Map.put(:requests, route_requests)
 
@@ -87,10 +94,11 @@ defmodule PhoenixApiDocs.Generator do
   end
 
   defp set_default_group(%{group: group} = route_docs, route) when is_nil(group) do
-    group = route.plug |> Phoenix.Naming.resource_name("Controller") |> Phoenix.Naming.humanize
+    group = route.plug
+      |> Phoenix.Naming.resource_name("Controller")
+      |> Phoenix.Naming.humanize()
 
-    route_docs
-    |> Map.put(:group, group)
+    Map.put(route_docs, :group, group)
   end
 
   defp set_default_group(route_docs, _), do: route_docs
