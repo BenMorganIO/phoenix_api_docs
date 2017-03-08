@@ -4,7 +4,7 @@ defmodule PhoenixApiDocs.Formatter do
   def init(_config), do: {:ok, nil}
 
   def handle_event({:suite_finished, _run_us, _load_us}, nil) do
-    save_blueprint_file
+    save_blueprint_file()
     :remove_handler
   end
 
